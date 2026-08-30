@@ -1,0 +1,54 @@
+import java.util.*;
+public class Main {
+ String accountName;
+ int accountNumber;
+ String accounttype;
+ Double accountammount;
+ Main(int Num, String Nam, Double Amm, String Typ) {
+  accountName = Nam;
+  accountNumber = Num;
+  accounttype = Typ;
+  accountammount = Amm;
+  System.out.println("\nBank Account Details");
+  System.out.println("Account holder name: " + accountName);
+  System.out.println("Account holder number: " + accountNumber);
+  System.out.println("Account type: " + accounttype);
+  System.out.println("Initial Balance: " + accountammount);
+  System.out.println("End of details");
+ }
+ void deposit(double depositAmount) {
+  accountammount = accountammount + depositAmount;
+  System.out.println("Amount Deposited: " + depositAmount);
+  System.out.println("Total Amount: " + accountammount);
+ }
+ void withdraw(double withdrawAmount) {
+  if (withdrawAmount <= accountammount) {
+   accountammount = accountammount - withdrawAmount;
+   System.out.println("Amount Withdrawn: " + withdrawAmount);
+   System.out.println("Total Amount: " + accountammount);
+ } else {
+    System.out.println("Insufficient Balance for Withdrawal!");
+ }
+}
+public static void main(String[] args) {
+ Scanner sc = new Scanner(System.in);
+ System.out.print("Enter Account Number: ");
+ int num = sc.nextInt();
+ sc.nextLine();
+ System.out.print("Enter Account Holder Name: ");
+ String name = sc.nextLine();
+ System.out.print("Enter Initial Balance: ");
+ double amount = sc.nextDouble();
+ sc.nextLine();
+ System.out.print("Enter Account Type: "); 
+ String type = sc.nextLine();
+ Main account1 = new Main(num, name, amount, type);
+ System.out.print("\nEnter Deposit Amount: ");
+ double depositAmount = sc.nextDouble();
+ account1.deposit(depositAmount);
+ System.out.print("\nEnter Withdrawal Amount: ");
+ double withdrawAmount = sc.nextDouble();
+ account1.withdraw(withdrawAmount);
+ sc.close();
+ }
+}
