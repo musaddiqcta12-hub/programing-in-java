@@ -1,0 +1,68 @@
+import java.util.Scanner;
+
+abstract class Vehicle {
+    String vehicleNumber, brand;
+
+    Vehicle(String vehicleNumber, String brand) {
+        this.vehicleNumber = vehicleNumber;
+        this.brand = brand;
+    }
+
+    abstract void startEngine();
+
+    final void showVehicleIdentity() {
+        System.out.println("Vehicle No: " + vehicleNumber);
+        System.out.println("Brand: " + brand);
+    }
+}
+
+final class Car extends Vehicle {
+    Car(String vehicleNumber, String brand) {
+        super(vehicleNumber, brand);
+    }
+
+    @Override
+    void startEngine() {
+        System.out.println("Car engine starts");
+    }
+}
+
+class Bike extends Vehicle {
+    Bike(String vehicleNumber, String brand) {
+        super(vehicleNumber, brand);
+    }
+
+    @Override
+    void startEngine() {
+        System.out.println("Bike engine starts");
+    }
+}
+
+public class p3 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Car Vehicle Number: ");
+        String cn = sc.nextLine();
+        System.out.print("Enter Car Brand: ");
+        String cb = sc.nextLine();
+
+        System.out.print("Enter Bike Vehicle Number: ");
+        String bn = sc.nextLine();
+        System.out.print("Enter Bike Brand: ");
+        String bb = sc.nextLine();
+
+        Vehicle car = new Car(cn, cb);
+        Vehicle bike = new Bike(bn, bb);
+
+        System.out.println("\nCar Details:");
+        car.showVehicleIdentity();
+        car.startEngine();
+
+        System.out.println("\nBike Details:");
+        bike.showVehicleIdentity();
+        bike.startEngine();
+
+        sc.close();
+    }
+}
