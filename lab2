@@ -1,0 +1,99 @@
+import java.util.Scanner;
+class Student {
+  protected int id;
+  protected String name;
+  protected String department;
+  public Student(int id, String name, String department) {
+  this.id = id;
+  this.name = name;
+  this.department = department;
+  }
+  public void displayDetails() {
+  System.out.println("ID: " + id);
+  System.out.println("Name: " + name);
+  System.out.println("Department: " + department);
+  }
+ }
+ class UndergraduateStudent extends Student {
+  private int semester;
+  private double cgpa;
+  public UndergraduateStudent(int id, String name, String department, int semester, double cgpa) {
+    super(id, name, department);
+    this.semester = semester;
+    this.cgpa = cgpa;
+   }
+   public void displayUndergraduateDetails() {
+     System.out.println("Semester: " + semester);
+     System.out.printf("CGPA: %.2f\n", cgpa);
+   }
+   @Override
+   public void displayDetails() {
+     super.displayDetails();
+     displayUndergraduateDetails();
+    }
+  }
+  class PostgraduateStudent extends Student {
+     private String specialization;
+     private String researchTopic;
+     public PostgraduateStudent(int id, String name, String department, String specialization, String researchTopic) {
+       super(id, name, department);
+       this.specialization = specialization;
+      this.researchTopic = researchTopic; 
+     }
+     public void displayPostgraduateDetails() {
+       System.out.println("Specialization: " + specialization);
+       System.out.println("Research Topic: " + researchTopic);
+    }
+    @Override
+    public void displayDetails() {
+      super.displayDetails();
+      displayPostgraduateDetails();
+     }
+   }
+   public class Main {
+     public static void main(String[] args) {
+       Scanner scanner = new Scanner(System.in);
+       System.out.println("Select student type to enter details:");
+       System.out.println("1. General Student");
+       System.out.println("2. Undergraduate Student");
+       System.out.println("3. Postgraduate Student");
+       System.out.print("Enter choice (1-3): ");
+       int choice = scanner.nextInt();
+       scanner.nextLine();
+       System.out.print("Enter ID: ");
+       int id = scanner.nextInt();
+       scanner.nextLine();
+       System.out.print("Enter Name: ");
+       String name = scanner.nextLine();
+       System.out.print("Enter Department: ");
+       String department = scanner.nextLine();
+       System.out.println("\n--- Student Details ---");
+       switch (choice) {
+         case 1:
+          Student student = new Student(id, name, department);
+          student.displayDetails();
+          break;
+         case 2:
+          System.out.print("Enter Semester: ");
+          int semester = scanner.nextInt();
+          System.out.print("Enter CGPA: ");
+          double cgpa = scanner.nextDouble();
+          UndergraduateStudent ug = new UndergraduateStudent(id, name, department, semester, cgpa);
+          System.out.println("\n--- Details ---");
+          ug.displayDetails();
+          break;
+        case 3:
+          System.out.print("Enter Specialization: ");
+          String specialization = scanner.nextLine();
+          System.out.print("Enter Research Topic: ");
+          String researchTopic = scanner.nextLine();
+          PostgraduateStudent pg = new PostgraduateStudent(id, name, department, specialization, researchTopic);
+          System.out.println("\n--- Details ---");
+          pg.displayDetails();
+          break;
+       default:
+          System.out.println("Invalid choice.");
+       }
+        scanner.close();
+    }
+ }
