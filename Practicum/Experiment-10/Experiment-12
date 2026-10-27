@@ -1,0 +1,61 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class LibraryManagementSystem {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String fileName = "transactions.txt";
+
+        while (true) {
+            System.out.println("\n1. Record Book Transaction\n2. View Transaction Records\n3. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); // clear buffer
+
+            if (choice == 1) {
+                System.out.print("Enter Book ID: ");
+                String id = sc.nextLine();
+                System.out.print("Enter Book Name: ");
+                String bName = sc.nextLine();
+                System.out.print("Enter Student/User Name: ");
+                String uName = sc.nextLine();
+                System.out.print("Enter Issue Date: ");
+                String iDate = sc.nextLine();
+                System.out.print("Enter Return Date: ");
+                String rDate = sc.nextLine();
+
+                try (FileWriter fw = new FileWriter(fileName, true)) {
+                    fw.write("ID: " + id + ", Book: " + bName + ", User: " + uName + 
+                             ", Issue: " + iDate + ", Return: " + rDate + "\n");
+                    System.out.println("Transaction recorded successfully.");
+                } catch (IOException e) {
+                    System.out.println("Error writing to file: " + e.getMessage());
+                }
+
+            } else if (choice == 2) {
+                File file = new File(fileName);
+                if (!file.exists() || file.length() == 0) {
+                    System.out.println("No transaction records found.");
+                } else {
+                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                        String line;
+                        System.out.println("\n--- Transaction Records ---");
+                        while ((line = br.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Error reading file: " + e.getMessage());
+                    }
+                }
+
+            } else if (choice == 3) {
+                System.out.println("Exiting Library Management System.");
+                break;
+
+            } else {
+                System.out.println("Invalid choice. Please select a valid option.");
+            }
+        }
+        sc.close();
+    }
+}
