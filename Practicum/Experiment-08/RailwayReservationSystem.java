@@ -1,100 +1,64 @@
 class TicketBooking {
-    private String passengerName;
-    private String bookingStatus;
+    String passengerName;
+    String bookingStatus;
 
-    public TicketBooking(String passengerName) {
-        this.passengerName = passengerName;
-        this.bookingStatus = "Pending";
+    TicketBooking(String name) {
+        this.passengerName = name;
+        this.bookingStatus = "Confirmed";
     }
 
-    public String getPassengerName() {
-        return passengerName;
-    }
-
-    public String getBookingStatus() {
-        return bookingStatus;
-    }
-
-    public void setBookingStatus(String bookingStatus) {
-        this.bookingStatus = bookingStatus;
-    }
-
-    public void displayBookingDetails(String threadInfo) {
-        System.out.println("---------------------------------------------");
+    void display(String threadName, long threadId) {
         System.out.println("Passenger Name : " + passengerName);
         System.out.println("Booking Status : " + bookingStatus);
-        System.out.println("Executed By    : " + threadInfo);
-        System.out.println("---------------------------------------------");
+        System.out.println("Thread Name    : " + threadName);
+        System.out.println("Thread ID      : " + threadId);
+        System.out.println("----------------------------------------");
     }
 }
 
 class BookingThread extends Thread {
-    private TicketBooking booking;
+    TicketBooking booking;
 
-    public BookingThread(String passengerName, String threadName) {
-        super(threadName);
+    BookingThread(String passengerName) {
         this.booking = new TicketBooking(passengerName);
     }
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(500);
-            booking.setBookingStatus("Confirmed");
-            String threadInfo = "Thread [Name: " + getName() + ", ID: " + getId() + "]";
-            booking.displayBookingDetails(threadInfo);
-        } catch (InterruptedException e) {
-            System.err.println("Booking interrupted for: " + booking.getPassengerName());
-        }
+        booking.display(Thread.currentThread().getName(), Thread.currentThread().getId());
     }
 }
 
 class BookingRunnable implements Runnable {
-    private TicketBooking booking;
+    TicketBooking booking;
 
-    public BookingRunnable(String passengerName) {
+    BookingRunnable(String passengerName) {
         this.booking = new TicketBooking(passengerName);
     }
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(500);
-            booking.setBookingStatus("Confirmed");
-            Thread current = Thread.currentThread();
-            String threadInfo = "Runnable Thread [Name: " + current.getName() + ", ID: " + current.getId() + "]";
-            booking.displayBookingDetails(threadInfo);
-        } catch (InterruptedException e) {
-            System.err.println("Booking interrupted for: " + booking.getPassengerName());
-        }
+        booking.display(Thread.currentThread().getName(), Thread.currentThread().getId());
     }
 }
 
-public class RailwayReservationSystem {
+public class RailwayReservation {
     public static void main(String[] args) {
-        System.out.println("=============================================");
-        System.out.println("   RAILWAY TICKET RESERVATION SYSTEM");
-        System.out.println("=============================================\n");
+        BookingThread t1 = new BookingThread("Rahul");
 
-        BookingThread thread1 = new BookingThread("Rahul", "Thread-Rahul");
-        BookingThread thread2 = new BookingThread("Aman", "Thread-Aman");
-        Thread thread3 = new Thread(new BookingRunnable("Priya"), "Runnable-Priya");
-        Thread thread4 = new Thread(new BookingRunnable("Neha"), "Runnable-Neha");
+        BookingRunnable runnable = new BookingRunnable("Priya");
+        Thread t2 = new Thread(runnable);
 
-        thread1.start();
-        thread2.start();
-        thread3.start();
-        thread4.start();
+        t1.start();
+        t2.start();
 
         try {
-            thread1.join();
-            thread2.join();
-            thread3.join();
-            thread4.join();
+            t1.join();
+            t2.join();
         } catch (InterruptedException e) {
-            System.err.println("Main thread interrupted while waiting for bookings to finish.");
+            e.printStackTrace();
         }
 
-        System.out.println("\nAll passenger booking requests have been processed successfully.");
+        System.out.println("All passenger booking requests have been processed successfully.");
     }
 }
